@@ -14,7 +14,7 @@ def find_stubs(package):
 
 setuptools.setup(
     name="GH_Util-stubs",
-    version="0.0.3",
+    version="0.0.4",
 	package_data=find_stubs("GH_Util-stubs"),
     packages=['GH_Util-stubs'],
     author="Robert McNeel & Associates",
@@ -22,6 +22,7 @@ setuptools.setup(
     description="Stubs for GH_Util",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    url="https://github.com/mcneel/pythonstubs",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",

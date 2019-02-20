@@ -1,7 +1,7 @@
 import setuptools, os
 
 long_description = '''
-# Rhino-subs
+# Rhino-stubs
 Stubs for RhinoCommon
 '''
 
@@ -14,7 +14,7 @@ def find_stubs(package):
 
 setuptools.setup(
     name="Rhino-stubs",
-    version="0.0.3",
+    version="0.0.4",
 	package_data=find_stubs("Rhino-stubs"),
     packages=['Rhino-stubs'],
     author="Robert McNeel & Associates",
@@ -22,6 +22,7 @@ setuptools.setup(
     description="Stubs for RhinoCommon",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    url="https://github.com/mcneel/pythonstubs",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
