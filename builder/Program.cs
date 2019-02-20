@@ -6,10 +6,13 @@ namespace PythonStubsBuilder
 {
   class Program
   {
+    static string AssemblyPath { get; set; }
+
     static void Main(string[] args)
     {
-      AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ReflectionAssemblyResolve;
-      Assembly assemblyToStub = Assembly.LoadFrom(args[0]);//.ReflectionOnlyLoadFrom(args[0]);
+      AssemblyPath = args[0];
+      AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
+      Assembly assemblyToStub = Assembly.LoadFrom(AssemblyPath);
       Type[] typesToStub = assemblyToStub.GetExportedTypes();
       string rootNamespace = typesToStub[0].Namespace.Split('.')[0];
       var stubsDirectory = System.IO.Directory.CreateDirectory($"{rootNamespace}-stubs");
@@ -28,6 +31,25 @@ namespace PythonStubsBuilder
       }
       var keys = stubDictionary.Keys;
       Console.WriteLine(args[0]);
+    }
+
+    private static Assembly AssemblyResolve(object sender, ResolveEventArgs args)
+    {
+      string assemblyToResolve = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
+      {
+        string dirName = System.IO.Path.GetDirectoryName(AssemblyPath);
+        int index = dirName.IndexOf("\\Rhino");
+        if( index > 0)
+        {
+          index = dirName.IndexOf("\\", index + 1);
+          string rhinoDir = dirName.Substring(0, index + 1);
+          string rhinoCommonPath = System.IO.Path.Combine(rhinoDir, "System", assemblyToResolve);
+          if (System.IO.File.Exists(rhinoCommonPath))
+            return Assembly.LoadFrom(rhinoCommonPath);
+        }
+
+      }
+      return null;
     }
 
     private static void WriteStubList(System.IO.DirectoryInfo rootDirectory, List<Type> stubTypes)
@@ -229,12 +251,6 @@ namespace PythonStubsBuilder
         return $"List[{rc}]";
       }
       return ToPythonType(t.Name);
-    }
-
-    private static Assembly ReflectionAssemblyResolve(object sender, ResolveEventArgs args)
-    {
-      Assembly a = Assembly.ReflectionOnlyLoad(args.Name);
-      return a;
     }
   }
 }
