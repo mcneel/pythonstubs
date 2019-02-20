@@ -62,7 +62,14 @@ namespace PythonStubsBuilder
           continue;
         }
 
-        sb.AppendLine($"class {stubType.Name}:");
+        if (stubType.BaseType != null && 
+          stubType.BaseType.FullName.StartsWith(ns[0]) && 
+          stubType.BaseType.FullName.IndexOf('+') < 0 &&
+          stubType.BaseType.FullName.IndexOf('`') < 0
+          )
+          sb.AppendLine($"class {stubType.Name}({stubType.BaseType.Name}):");
+        else
+          sb.AppendLine($"class {stubType.Name}:");
         foreach(var constructor in stubType.GetConstructors())
         {
           var parameters = constructor.GetParameters();
@@ -79,6 +86,8 @@ namespace PythonStubsBuilder
         }
         foreach (var method in stubType.GetMethods())
         {
+          if (method.DeclaringType != stubType)
+            continue;
           var parameters = method.GetParameters();
           int outParamCount = 0;
           int refParamCount = 0;
