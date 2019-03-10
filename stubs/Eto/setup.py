@@ -1,8 +1,8 @@
 import setuptools, os
 
 long_description = '''
-# Rhino-stubs
-Stubs for RhinoCommon
+# Eto-stubs
+Stubs for Eto
 '''
 
 def find_stubs(package):
@@ -13,17 +13,16 @@ def find_stubs(package):
     return {package: stubs}
 
 setuptools.setup(
-    name="Rhino-stubs",
-    version="0.0.5",
-	package_data=find_stubs("Rhino-stubs"),
-    packages=['Rhino-stubs'],
+    name="Eto-stubs",
+    version="0.0.4",
+	package_data=find_stubs("Eto-stubs"),
+    packages=['Eto-stubs'],
     author="Robert McNeel & Associates",
     author_email="steve@mcneel.com",
-    description="Stubs for RhinoCommon",
+    description="Stubs for Eto",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/mcneel/pythonstubs",
-    install_requires=['Grasshopper-stubs', 'GH_Util-stubs', 'GH_IO-stubs'],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
