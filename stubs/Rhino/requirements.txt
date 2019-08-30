@@ -4,6 +4,6 @@
 #
 #    pip-compile --output-file requirements.txt setup.py
 #
-gh-io-stubs==0.0.4
-gh-util-stubs==0.0.4
-grasshopper-stubs==0.0.4
+gh-io-stubs==7.0.19239
+gh-util-stubs==7.0.19239
+grasshopper-stubs==7.0.19239

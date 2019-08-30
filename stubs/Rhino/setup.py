@@ -1,9 +1,11 @@
-import setuptools, os
+import setuptools
+import os
 
 long_description = '''
 # Rhino-stubs
 Stubs for RhinoCommon
 '''
+
 
 def find_stubs(package):
     stubs = []
@@ -12,10 +14,11 @@ def find_stubs(package):
             stubs.append(os.path.relpath(os.path.join(root, f), package))
     return {package: stubs}
 
+
 setuptools.setup(
     name="Rhino-stubs",
-    version="0.0.5",
-	package_data=find_stubs("Rhino-stubs"),
+    version="7.0.19239",
+    package_data=find_stubs("Rhino-stubs"),
     packages=['Rhino-stubs'],
     author="Robert McNeel & Associates",
     author_email="steve@mcneel.com",
@@ -25,7 +28,7 @@ setuptools.setup(
     url="https://github.com/mcneel/pythonstubs",
     install_requires=['Grasshopper-stubs', 'GH_Util-stubs', 'GH_IO-stubs'],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python"

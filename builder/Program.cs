@@ -10,27 +10,41 @@ namespace PythonStubsBuilder
 
     static void Main(string[] args)
     {
-      AssemblyPath = args[0];
-      AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
-      Assembly assemblyToStub = Assembly.LoadFrom(AssemblyPath);
-      Type[] typesToStub = assemblyToStub.GetExportedTypes();
-      string rootNamespace = typesToStub[0].Namespace.Split('.')[0];
-      var stubsDirectory = System.IO.Directory.CreateDirectory($"{rootNamespace}-stubs");
-      var stubDictionary = new Dictionary<string, List<Type>>();
+      string[] dllsToStub = new string[] {
+        @"C:\Program Files\Rhino WIP\System\Eto.dll",
+        @"C:\Program Files\Rhino WIP\System\RhinoCommon.dll",
+        @"C:\Program Files\Rhino WIP\Plug-ins\Grasshopper\Grasshopper.dll",
+        @"C:\Program Files\Rhino WIP\Plug-ins\Grasshopper\GH_IO.dll",
+        @"C:\Program Files\Rhino WIP\Plug-ins\Grasshopper\GH_Util.dll" };
 
-      foreach(var stubType in typesToStub)
-      {
-        if (!stubDictionary.ContainsKey(stubType.Namespace))
-          stubDictionary[stubType.Namespace] = new List<Type>();
-        stubDictionary[stubType.Namespace].Add(stubType);
-      }
+      // allow command line list of files to stub instead of the build-in list
+      if (args.Length > 0)
+        dllsToStub = args;
 
-      foreach( var stubList in stubDictionary.Values )
+      for (int i = 0; i < dllsToStub.Length; i++)
       {
-        WriteStubList(stubsDirectory, stubList);
+        AssemblyPath = dllsToStub[i];
+        AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
+        Assembly assemblyToStub = Assembly.LoadFrom(AssemblyPath);
+        Type[] typesToStub = assemblyToStub.GetExportedTypes();
+        string rootNamespace = typesToStub[0].Namespace.Split('.')[0];
+        var stubsDirectory = System.IO.Directory.CreateDirectory($"{rootNamespace}-stubs");
+        var stubDictionary = new Dictionary<string, List<Type>>();
+
+        foreach (var stubType in typesToStub)
+        {
+          if (!stubDictionary.ContainsKey(stubType.Namespace))
+            stubDictionary[stubType.Namespace] = new List<Type>();
+          stubDictionary[stubType.Namespace].Add(stubType);
+        }
+
+        foreach (var stubList in stubDictionary.Values)
+        {
+          WriteStubList(stubsDirectory, stubList);
+        }
+        var keys = stubDictionary.Keys;
+        Console.WriteLine($"{dllsToStub[i]} - version {assemblyToStub.GetName().Version}");
       }
-      var keys = stubDictionary.Keys;
-      Console.WriteLine(args[0]);
     }
 
     private static Assembly AssemblyResolve(object sender, ResolveEventArgs args)

@@ -1,9 +1,11 @@
-import setuptools, os
+import os
+import setuptools
 
 long_description = '''
 # Eto-stubs
 Stubs for Eto
 '''
+
 
 def find_stubs(package):
     stubs = []
@@ -12,10 +14,11 @@ def find_stubs(package):
             stubs.append(os.path.relpath(os.path.join(root, f), package))
     return {package: stubs}
 
+
 setuptools.setup(
     name="Eto-stubs",
-    version="0.0.4",
-	package_data=find_stubs("Eto-stubs"),
+    version="2.5.0",
+    package_data=find_stubs("Eto-stubs"),
     packages=['Eto-stubs'],
     author="Robert McNeel & Associates",
     author_email="steve@mcneel.com",
@@ -24,7 +27,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/mcneel/pythonstubs",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python"
