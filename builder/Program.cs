@@ -6,50 +6,55 @@ namespace PythonStubsBuilder
 {
   class Program
   {
-    static string AssemblyPath { get; set; }
-
-    static void Main(string[] args)
-    {
-      string[] dllsToStub = new string[] {
+        private static string[] DefaultDlls = new string[] {
         @"C:\Program Files\Rhino WIP\System\Eto.dll",
         @"C:\Program Files\Rhino WIP\System\RhinoCommon.dll",
         @"C:\Program Files\Rhino WIP\Plug-ins\Grasshopper\Grasshopper.dll",
         @"C:\Program Files\Rhino WIP\Plug-ins\Grasshopper\GH_IO.dll",
-        @"C:\Program Files\Rhino WIP\Plug-ins\Grasshopper\GH_Util.dll" };
+        @"C:\Program Files\Rhino WIP\Plug-ins\Grasshopper\GH_Util.dll"
+    };
 
-      // allow command line list of files to stub instead of the build-in list
-      if (args.Length > 0)
-        dllsToStub = args;
+        static string AssemblyPath { get; set; }
 
-      for (int i = 0; i < dllsToStub.Length; i++)
-      {
-        AssemblyPath = dllsToStub[i];
-        AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
-        Assembly assemblyToStub = Assembly.LoadFrom(AssemblyPath);
-        Type[] typesToStub = assemblyToStub.GetExportedTypes();
-        string rootNamespace = typesToStub[0].Namespace.Split('.')[0];
-        var stubsDirectory = System.IO.Directory.CreateDirectory($"{rootNamespace}-stubs");
-        var stubDictionary = new Dictionary<string, List<Type>>();
+        static void Main(string[] args) {
+            // allow command line list of files to stub instead of the build-in list
+            string[] dllsToStub = args.Length > 0 ? args : DefaultDlls;
 
-        foreach (var stubType in typesToStub)
-        {
-          if (!stubDictionary.ContainsKey(stubType.Namespace))
-            stubDictionary[stubType.Namespace] = new List<Type>();
-          stubDictionary[stubType.Namespace].Add(stubType);
+            // prepare resolver
+            AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve; ;
+
+            for (int i = 0; i < dllsToStub.Length; i++) {
+                // pick a dll and load
+                AssemblyPath = dllsToStub[i];
+                Assembly assemblyToStub = Assembly.LoadFrom(AssemblyPath);
+                Console.WriteLine($"Generating Stubs For: {AssemblyPath} (Version {assemblyToStub.GetName().Version})");
+
+                // extract types
+                Type[] typesToStub = assemblyToStub.GetExportedTypes();
+                string rootNamespace = typesToStub[0].Namespace.Split('.')[0];
+
+                // prepare output directoru
+                var stubsDirectory = System.IO.Directory.CreateDirectory($"{rootNamespace}-stubs");
+                Console.WriteLine("    Output Path: {0}", stubsDirectory);
+
+                // build type db
+                var stubDictionary = new Dictionary<string, List<Type>>();
+                foreach (var stubType in typesToStub) {
+                    if (!stubDictionary.ContainsKey(stubType.Namespace))
+                        stubDictionary[stubType.Namespace] = new List<Type>();
+                    stubDictionary[stubType.Namespace].Add(stubType);
+                }
+
+                // generate stubs for each type
+                foreach (var stubList in stubDictionary.Values)
+                    WriteStubList(stubsDirectory, stubList);
+            }
+            Console.WriteLine("All Done");
         }
-
-        foreach (var stubList in stubDictionary.Values)
-        {
-          WriteStubList(stubsDirectory, stubList);
-        }
-        var keys = stubDictionary.Keys;
-        Console.WriteLine($"{dllsToStub[i]} - version {assemblyToStub.GetName().Version}");
-      }
-      Console.WriteLine("Done");
-    }
 
     private static Assembly AssemblyResolve(object sender, ResolveEventArgs args)
     {
+      Console.WriteLine($"    Attempting to load {args.Name}");
       string assemblyToResolve = args.Name.Substring(0, args.Name.IndexOf(',')) + ".dll";
       {
         string dirName = System.IO.Path.GetDirectoryName(AssemblyPath);
