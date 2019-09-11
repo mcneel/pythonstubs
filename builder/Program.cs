@@ -45,6 +45,7 @@ namespace PythonStubsBuilder
         var keys = stubDictionary.Keys;
         Console.WriteLine($"{dllsToStub[i]} - version {assemblyToStub.GetName().Version}");
       }
+      Console.WriteLine("Done");
     }
 
     private static Assembly AssemblyResolve(object sender, ResolveEventArgs args)
@@ -80,9 +81,11 @@ namespace PythonStubsBuilder
 
       var sb = new System.Text.StringBuilder();
       sb.AppendLine("from typing import Tuple, Set, Iterable, List");
-      sb.AppendLine();
+
       foreach(var stubType in stubTypes)
       {
+        sb.AppendLine();
+        sb.AppendLine();
         if (stubType.IsGenericType)
           continue; //skip generics for now
         if (stubType.IsEnum)
@@ -92,8 +95,12 @@ namespace PythonStubsBuilder
           var values = Enum.GetValues(stubType);
           for(int i=0; i<names.Length; i++)
           {
+            string name = names[i];
+            if (name.Equals("None", StringComparison.Ordinal))
+              name = $"#{name}";
+
             object val = Convert.ChangeType(values.GetValue(i), Type.GetTypeCode(stubType));
-            sb.AppendLine($"    {names[i]} = {val}");
+            sb.AppendLine($"    {name} = {val}");
           }
           continue;
         }
@@ -106,21 +113,40 @@ namespace PythonStubsBuilder
           sb.AppendLine($"class {stubType.Name}({stubType.BaseType.Name}):");
         else
           sb.AppendLine($"class {stubType.Name}:");
-        foreach(var constructor in stubType.GetConstructors())
+
+        // constructors
+        ConstructorInfo[] constructors = stubType.GetConstructors();
+        foreach(var constructor in constructors)
         {
-          var parameters = constructor.GetParameters();
+          if (constructors.Length > 1)
+            sb.AppendLine("    @overload");
           sb.Append("    def __init__(self");
+          var parameters = constructor.GetParameters();
           for (int i = 0; i < parameters.Length; i++)
           {
             if( 0==i )
                 sb.Append(", ");
-              sb.Append($"{SafePythonName(parameters[i].Name)} : {ToPythonType(parameters[i].ParameterType)}");
+              sb.Append($"{SafePythonName(parameters[i].Name)}: {ToPythonType(parameters[i].ParameterType)}");
             if (i < (parameters.Length - 1))
               sb.Append(", ");
           }
           sb.AppendLine("): ...");
         }
-        foreach (var method in stubType.GetMethods())
+
+        // methods
+        MethodInfo[] methods = stubType.GetMethods();
+        Dictionary<string, int> methodNames = new Dictionary<string, int>();
+        foreach(var method in methods)
+        {
+          int count;
+          if (methodNames.TryGetValue(method.Name, out count))
+            count++;
+          else
+            count = 1;
+          methodNames[method.Name] = count;
+        }
+
+        foreach (var method in methods)
         {
           if (method.DeclaringType != stubType)
             continue;
@@ -145,10 +171,14 @@ namespace PythonStubsBuilder
             {
               sb.AppendLine($"    @{propName}.setter");
             }
-            sb.Append($"    def {propName} (");
+            sb.Append($"    def {propName}(");
           }
           else
-            sb.Append($"    def {method.Name} (");
+          {
+            if (methodNames[method.Name] > 1)
+              sb.AppendLine("    @overload");
+            sb.Append($"    def {method.Name}(");
+          }
 
           bool addComma = false;
           if ( !method.IsStatic )
@@ -164,7 +194,7 @@ namespace PythonStubsBuilder
             if( addComma )
               sb.Append(", ");
 
-            sb.Append($"{SafePythonName(parameters[i].Name)} : {ToPythonType(parameters[i].ParameterType)}");
+            sb.Append($"{SafePythonName(parameters[i].Name)}: {ToPythonType(parameters[i].ParameterType)}");
             addComma = true;
           }
           sb.Append(")");
@@ -228,6 +258,9 @@ namespace PythonStubsBuilder
         string partial = ToPythonType(rc.Substring(0, rc.Length - 2));
         return $"Set({partial})";
       }
+
+      if (rc.EndsWith("*"))
+        return rc.Substring(0, rc.Length - 1); // ? not sure what we can do for pointers
 
       if (rc.Equals("String"))
         return "str";
