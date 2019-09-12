@@ -102,7 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-/builder/obj
-/builder/bin
-/builder/PythonStubsBuilder.csproj.user
-/builder/.vs
+**/.vs
+**/obj
+**/bin
