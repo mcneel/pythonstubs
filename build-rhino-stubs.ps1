@@ -5,7 +5,7 @@ $rhinobase = "C:\Program Files\Rhino WIP"
 $rhinoplugins = "$rhinobase\Plug-ins"
 $rhinosystem = "$rhinobase\System"
 
-cd "builder\bin\Release x86"
+cd "builder\bin\Release x64"
 
 ./pystubsbuilder.exe --dest=$stubsdest --search=$rhinosystem "$rhinosystem\Eto.dll"
 ./pystubsbuilder.exe --dest=$stubsdest --search=$rhinosystem "$rhinosystem\RhinoCommon.dll"

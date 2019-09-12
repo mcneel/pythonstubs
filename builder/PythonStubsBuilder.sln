@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PythonStubsBuilder64", "PythonStubsBuilder\PythonStubsBuilder64.csproj", "{6A32957A-462B-4C9E-8113-B29AA76CC4D3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pystubsbuilder64", "pystubsbuilder\pystubsbuilder64.csproj", "{8B108C1D-1C38-4621-99A8-CDDC122418F7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pystubsbuilder", "pystubsbuilder\pystubsbuilder.csproj", "{CEF85822-DA12-408A-AB68-CC4708F9C986}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PythonStubsBuilder", "PythonStubsBuilder\PythonStubsBuilder.csproj", "{E51460AA-BC2B-446E-A0C3-32478F9E9E52}"
@@ -14,21 +10,12 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release x64|Any CPU = Release x64|Any CPU
-		Release x86|Any CPU = Release x86|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6A32957A-462B-4C9E-8113-B29AA76CC4D3}.Release x64|Any CPU.ActiveCfg = Release x64|Any CPU
-		{6A32957A-462B-4C9E-8113-B29AA76CC4D3}.Release x64|Any CPU.Build.0 = Release x64|Any CPU
-		{6A32957A-462B-4C9E-8113-B29AA76CC4D3}.Release x86|Any CPU.ActiveCfg = Release x64|Any CPU
-		{8B108C1D-1C38-4621-99A8-CDDC122418F7}.Release x64|Any CPU.ActiveCfg = Release x64|Any CPU
-		{8B108C1D-1C38-4621-99A8-CDDC122418F7}.Release x64|Any CPU.Build.0 = Release x64|Any CPU
-		{8B108C1D-1C38-4621-99A8-CDDC122418F7}.Release x86|Any CPU.ActiveCfg = Release x64|Any CPU
-		{CEF85822-DA12-408A-AB68-CC4708F9C986}.Release x64|Any CPU.ActiveCfg = Release x86|Any CPU
-		{CEF85822-DA12-408A-AB68-CC4708F9C986}.Release x86|Any CPU.ActiveCfg = Release x86|Any CPU
-		{CEF85822-DA12-408A-AB68-CC4708F9C986}.Release x86|Any CPU.Build.0 = Release x86|Any CPU
-		{E51460AA-BC2B-446E-A0C3-32478F9E9E52}.Release x64|Any CPU.ActiveCfg = Release x86|Any CPU
-		{E51460AA-BC2B-446E-A0C3-32478F9E9E52}.Release x86|Any CPU.ActiveCfg = Release x86|Any CPU
-		{E51460AA-BC2B-446E-A0C3-32478F9E9E52}.Release x86|Any CPU.Build.0 = Release x86|Any CPU
+		{CEF85822-DA12-408A-AB68-CC4708F9C986}.Release x64|Any CPU.ActiveCfg = Release x64|Any CPU
+		{CEF85822-DA12-408A-AB68-CC4708F9C986}.Release x64|Any CPU.Build.0 = Release x64|Any CPU
+		{E51460AA-BC2B-446E-A0C3-32478F9E9E52}.Release x64|Any CPU.ActiveCfg = Release x64|Any CPU
+		{E51460AA-BC2B-446E-A0C3-32478F9E9E52}.Release x64|Any CPU.Build.0 = Release x64|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
