@@ -16,13 +16,16 @@ namespace pystubsbuilder {
 Usage:
     pystubsbuilder (-h | --help)
     pystubsbuilder (-V | --version)
-    pystubsbuilder [--dest=<dest_path>] [--search=<search_path>...] <target_dll>...
+    pystubsbuilder [--dest=<dest_path>] [--search=<search_path>...] [--prefix=<prefix>] [--postfix=<postfix>] [--dest-is-root] <target_dll>...
 
 Options:
     -h --help                   Show this help
     -V --version                Show version
     --dest=<dest_path>          Path to save the subs to
     --search=<search_path>      Path to search for referenced assemblies
+    --prefix=<prefix>           Root namespace directory prefix
+    --postfix=<postfix>         Root namespace directory postfix
+    --dest-is-root              Use destination path for root namespace
 ";
 
         static void Main(string[] args) {
@@ -38,7 +41,7 @@ Options:
                             destPath = (string)arguments["--dest"].Value;
                         Console.WriteLine($"target path is {destPath}");
 
-                        // grab searchp paths if provided
+                        // grab search paths if provided
                         string[] searchPaths = null;
                         if (arguments["--search"] != null && arguments["--search"].IsList) {
                             List<string> lookupPaths = new List<string>();
@@ -49,9 +52,22 @@ Options:
                             searchPaths = lookupPaths.ToArray();
                         }
 
+                        // prepare generator configs
+                        // grab pre and postfixes for root namespace dir names
+                        var genCfg = new PythonStubsBuilderConfigs {
+                            Prefix = arguments["--prefix"] != null ? (string)arguments["--prefix"].Value : string.Empty,
+                            Postfix = arguments["--postfix"] != null ? (string)arguments["--postfix"].Value : string.Empty,
+                            DestPathIsRoot = arguments["--dest-is-root"] != null ? (bool)arguments["--dest-is-root"].Value : false,
+                        };
+
                         Console.WriteLine($"building stubs for {assmPath}");
                         try {
-                            var dest = PythonStubsBuilder.BuildAssemblyStubs(assmPath, destPath: destPath, searchPaths: searchPaths);
+                            var dest = PythonStubsBuilder.BuildAssemblyStubs(
+                                assmPath,
+                                destPath: destPath,
+                                searchPaths: searchPaths,
+                                cfgs: genCfg
+                                );
                             Console.WriteLine($"stubs saved to {dest}");
                         }
                         catch (Exception sgEx) {

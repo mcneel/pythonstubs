@@ -4,10 +4,20 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace PythonStubs {
+    public class PythonStubsBuilderConfigs {
+        public string Prefix { get; set; } = string.Empty;
+        public string Postfix { get; set; } = string.Empty;
+        public bool DestPathIsRoot { get; set; } = false;
+    }
+
     public static class PythonStubsBuilder {
         private static List<string> SearchPaths { get; set; } = new List<string>();
 
-        public static string BuildAssemblyStubs(string targetAssemblyPath, string destPath = null, string[] searchPaths = null) {
+        public static string BuildAssemblyStubs(string targetAssemblyPath, string destPath = null, string[] searchPaths = null, PythonStubsBuilderConfigs cfgs = null) {
+            // prepare configs
+            if (cfgs is null)
+                cfgs = new PythonStubsBuilderConfigs();
+
             // prepare resolver
             AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve; ;
 
@@ -23,10 +33,16 @@ namespace PythonStubs {
 
             // prepare output directory
             DirectoryInfo stubsDirectory;
-            if (destPath is null)
-                stubsDirectory = Directory.CreateDirectory(rootNamespace);
-            else
-                stubsDirectory = Directory.CreateDirectory(Path.Combine(destPath, rootNamespace));
+            if (cfgs.DestPathIsRoot && Directory.Exists(destPath)) {
+                stubsDirectory = new DirectoryInfo(destPath);
+            }
+            else {
+                var extendedRootNS = cfgs.Prefix + rootNamespace + cfgs.Postfix;
+                if (destPath is null || !Directory.Exists(destPath))
+                    stubsDirectory = Directory.CreateDirectory(extendedRootNS);
+                else
+                    stubsDirectory = Directory.CreateDirectory(Path.Combine(destPath, extendedRootNS));
+            }
 
             // build type db
             var stubDictionary = new Dictionary<string, List<Type>>();

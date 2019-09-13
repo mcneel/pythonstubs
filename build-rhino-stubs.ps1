@@ -7,11 +7,11 @@ $rhinosystem = "$rhinobase\System"
 
 cd "builder\bin\Release x64"
 
-./pystubsbuilder.exe --dest=$stubsdest --search=$rhinosystem "$rhinosystem\Eto.dll"
-./pystubsbuilder.exe --dest=$stubsdest --search=$rhinosystem "$rhinosystem\RhinoCommon.dll"
-./pystubsbuilder.exe --dest=$stubsdest --search=$rhinosystem "$rhinoplugins\Grasshopper\Grasshopper.dll"
-./pystubsbuilder.exe --dest=$stubsdest --search=$rhinosystem "$rhinoplugins\Grasshopper\GH_IO.dll"
-./pystubsbuilder.exe --dest=$stubsdest --search=$rhinosystem "$rhinoplugins\Grasshopper\GH_Util.dll"
+./pystubsbuilder.exe --dest="$stubsdest\Eto" --search=$rhinosystem --postfix="-stubs" "$rhinosystem\Eto.dll"
+./pystubsbuilder.exe --dest="$stubsdest\Rhino" --search=$rhinosystem --postfix="-stubs" "$rhinosystem\RhinoCommon.dll"
+./pystubsbuilder.exe --dest="$stubsdest\Grasshopper" --search=$rhinosystem --postfix="-stubs" "$rhinoplugins\Grasshopper\Grasshopper.dll"
+./pystubsbuilder.exe --dest="$stubsdest\GH_IO" --search=$rhinosystem --postfix="-stubs" "$rhinoplugins\Grasshopper\GH_IO.dll"
+./pystubsbuilder.exe --dest="$stubsdest\GH_Util" --search=$rhinosystem --postfix="-stubs" "$rhinoplugins\Grasshopper\GH_Util.dll"
 
 # back to where started
 cd $mypath
