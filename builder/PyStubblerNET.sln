@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyStubbler", "PyStubbler\PyStubbler.csproj", "{31381EC9-A531-4802-B6A5-3341D85890CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PyStubblerLib", "PyStubblerLib\PyStubblerLib.csproj", "{CFF04832-FC00-4589-AFD1-3E077A94C9B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31381EC9-A531-4802-B6A5-3341D85890CE}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{31381EC9-A531-4802-B6A5-3341D85890CE}.Debug|x64.ActiveCfg = Debug|x64
+		{31381EC9-A531-4802-B6A5-3341D85890CE}.Debug|x64.Build.0 = Debug|x64
+		{31381EC9-A531-4802-B6A5-3341D85890CE}.Release|Any CPU.ActiveCfg = Release|x64
+		{31381EC9-A531-4802-B6A5-3341D85890CE}.Release|x64.ActiveCfg = Release|x64
+		{31381EC9-A531-4802-B6A5-3341D85890CE}.Release|x64.Build.0 = Release|x64
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{CFF04832-FC00-4589-AFD1-3E077A94C9B7}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68A85ADF-3F9B-47EF-950B-2D2BCEE63FD9}
+	EndGlobalSection
+EndGlobal
