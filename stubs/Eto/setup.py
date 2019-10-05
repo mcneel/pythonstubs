@@ -17,7 +17,7 @@ def find_stubs(package):
 
 setuptools.setup(
     name="Eto-stubs",
-    version="2.5.1",
+    version="2.5.0"
     package_data=find_stubs("Eto-stubs"),
     packages=['Eto-stubs'],
     author="Robert McNeel & Associates",

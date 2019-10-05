@@ -40,6 +40,15 @@ class ClassArrayString:
     def ToArray(self) -> Set(str): ...
 
 
+class CurveSegment:
+    @property
+    def Index(self) -> int: ...
+    @property
+    def Reversed(self) -> bool: ...
+    @property
+    def SubDomain(self) -> Interval: ...
+
+
 class MeshPointDataStruct:
 
 

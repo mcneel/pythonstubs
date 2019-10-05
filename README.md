@@ -1,5 +1,7 @@
 # McNeel python stubs
 
+[![PyPI](https://img.shields.io/pypi/v/Rhino-stubs.svg)](https://pypi.org/project/Rhino-stubs)
+
 Python stubs for .NET assemblies that ship with Rhino. Specifically
 - RhinoCommon (https://pypi.org/project/Rhino-stubs/)
 - Eto (https://pypi.org/project/Eto-stubs/)

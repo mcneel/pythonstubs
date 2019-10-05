@@ -53,9 +53,31 @@ namespace PyStubblerLib
                 stubDictionary[stubType.Namespace].Add(stubType);
             }
 
+            List<string> namespaces = new List<string>(stubDictionary.Keys);
+
             // generate stubs for each type
             foreach (var stubList in stubDictionary.Values)
-                WriteStubList(stubsDirectory, stubList);
+                WriteStubList(stubsDirectory, namespaces.ToArray(), stubList);
+
+            // update the setup.py version with the matching version of the assembly
+            var parentDirectory = stubsDirectory.Parent;
+            string setup_py = Path.Combine(parentDirectory.FullName, "setup.py");
+            if( File.Exists(setup_py))
+            {
+                string[] contents = File.ReadAllLines(setup_py);
+                for( int i=0; i<contents.Length; i++ )
+                {
+                    string line = contents[i].Trim();
+                    if( line.StartsWith("version=") )
+                    {
+                        line = contents[i].Substring(0, contents[i].IndexOf("="));
+                        var version = assemblyToStub.GetName().Version;
+                        line = line + $"=\"{version.Major}.{version.Minor}.{version.Build}\"";
+                        contents[i] = line;
+                    }
+                }
+                File.WriteAllLines(setup_py, contents);
+            }
 
             return stubsDirectory.FullName;
         }
@@ -76,7 +98,24 @@ namespace PyStubblerLib
             return null;
         }
 
-        private static void WriteStubList(DirectoryInfo rootDirectory, List<Type> stubTypes)
+        private static string[] GetChildNamespaces(string parentNamespace, string[] allNamespaces)
+        {
+            List<string> childNamespaces = new List<string>();
+            foreach(var ns in allNamespaces)
+            {
+                if( ns.StartsWith(parentNamespace + "."))
+                {
+                    string childNamespace = ns.Substring(parentNamespace.Length + 1);
+                    if (!childNamespace.Contains("."))
+                        childNamespaces.Add(childNamespace);
+                }
+            }
+            childNamespaces.Sort();
+            return childNamespaces.ToArray();
+        }
+
+
+        private static void WriteStubList(DirectoryInfo rootDirectory, string[] allNamespaces, List<Type> stubTypes)
         {
             // sort the stub list so we get consistent output over time
             stubTypes.Sort((a, b) => { return a.Name.CompareTo(b.Name); });
@@ -92,10 +131,27 @@ namespace PyStubblerLib
             path = Path.Combine(path, "__init__.pyi");
 
             var sb = new System.Text.StringBuilder();
+
+            string[] allChildNamespaces = GetChildNamespaces(stubTypes[0].Namespace, allNamespaces);
+            if( allChildNamespaces.Length>0 )
+            {
+                sb.Append("__all__ = [");
+                for(int i=0; i<allChildNamespaces.Length; i++)
+                {
+                    if (i > 0)
+                        sb.Append(",");
+                    sb.Append($"'{allChildNamespaces[i]}'");
+                }
+                sb.AppendLine("]");
+            }
             sb.AppendLine("from typing import Tuple, Set, Iterable, List");
 
             foreach (var stubType in stubTypes)
             {
+                var obsolete = stubType.GetCustomAttribute(typeof(System.ObsoleteAttribute));
+                if (obsolete != null)
+                    continue;
+
                 sb.AppendLine();
                 sb.AppendLine();
                 if (stubType.IsGenericType)
@@ -154,6 +210,9 @@ namespace PyStubblerLib
                 Dictionary<string, int> methodNames = new Dictionary<string, int>();
                 foreach (var method in methods)
                 {
+                    if (method.GetCustomAttribute(typeof(System.ObsoleteAttribute)) != null)
+                        continue;
+
                     int count;
                     if (methodNames.TryGetValue(method.Name, out count))
                         count++;
@@ -164,6 +223,9 @@ namespace PyStubblerLib
 
                 foreach (var method in methods)
                 {
+                    if (method.GetCustomAttribute(typeof(System.ObsoleteAttribute)) != null)
+                        continue;
+
                     if (method.DeclaringType != stubType)
                         continue;
                     var parameters = method.GetParameters();
