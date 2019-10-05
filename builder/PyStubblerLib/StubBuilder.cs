@@ -79,6 +79,21 @@ namespace PyStubblerLib
                 File.WriteAllLines(setup_py, contents);
             }
 
+            // Update the requirements for for Rhino-stubs.
+            if (assemblyToStub.GetName().Name.Equals("RhinoCommon", StringComparison.InvariantCulture))
+            {
+                var contents = new System.Text.StringBuilder();
+                contents.AppendLine("--index-url https://pypi.python.org/simple/");
+                contents.AppendLine();
+
+                var version = assemblyToStub.GetName().Version;
+                contents.AppendLine($"GH_IO-stubs=={version.Major}.{version.Minor}.{version.Build}");
+                contents.AppendLine($"GH_Util-stubs=={version.Major}.{version.Minor}.{version.Build}");
+                contents.AppendLine($"Grasshopper=={version.Major}.{version.Minor}.{version.Build}");
+                string requirementsPath = Path.Combine(parentDirectory.FullName, "requirements.txt");
+                File.WriteAllText(requirementsPath, contents.ToString());
+            }
+
             return stubsDirectory.FullName;
         }
 
