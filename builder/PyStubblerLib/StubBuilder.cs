@@ -72,7 +72,7 @@ namespace PyStubblerLib
                     {
                         line = contents[i].Substring(0, contents[i].IndexOf("="));
                         var version = assemblyToStub.GetName().Version;
-                        line = line + $"=\"{version.Major}.{version.Minor}.{version.Build}\"";
+                        line = line + $"=\"{version.Major}.{version.Minor}.{version.Build}\",";
                         contents[i] = line;
                     }
                 }
