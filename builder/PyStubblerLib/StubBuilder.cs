@@ -197,6 +197,8 @@ namespace PyStubblerLib
                 else
                     sb.AppendLine($"class {stubType.Name}:");
 
+                string classStartString = sb.ToString();
+
                 // constructors
                 ConstructorInfo[] constructors = stubType.GetConstructors();
                 // sort for consistent output
@@ -326,6 +328,12 @@ namespace PyStubblerLib
                     }
                     sb.AppendLine(": ...");
                 }
+                // If no strings appended, class is empty. add "pass"
+                if (sb.ToString().Length == classStartString.Length)
+                {
+                    sb.AppendLine($"    pass");
+                }
+
             }
             File.WriteAllText(path, sb.ToString());
         }
