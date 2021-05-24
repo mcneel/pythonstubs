@@ -23,9 +23,11 @@ class DigitizerPlugIn(PlugIn):
 
 
 class FileExportPlugIn(PlugIn):
+    pass
 
 
 class FileImportPlugIn(PlugIn):
+    pass
 
 
 class FileTypeList:
@@ -337,7 +339,12 @@ class PlugIn:
     def GetInstalledPlugInNames() -> Set(str): ...
     @overload
     def GetInstalledPlugInNames(typeFilter: PlugInType, loaded: bool, unloaded: bool) -> Set(str): ...
+    @overload
+    def GetInstalledPlugInNames(typeFilter: PlugInType, loaded: bool, unloaded: bool, localizedPlugInName: bool) -> Set(str): ...
+    @overload
     def GetInstalledPlugIns() -> Dictionary: ...
+    @overload
+    def GetInstalledPlugIns(localizedPlugInName: bool) -> Dictionary: ...
     def GetLoadProtection(pluginId: Guid) -> Tuple[bool, bool]: ...
     def GetPlugInInfo(pluginId: Guid) -> PlugInInfo: ...
     def GetPlugInObject(self) -> Object: ...
@@ -476,6 +483,7 @@ class RenderFeature:
     RenderViewSource = 19
     CustomSkylightEnvironment = 20
     CustomReflectionEnvironment = 21
+    RenderChannels = 22
 
 
 class RenderPlugIn(PlugIn):

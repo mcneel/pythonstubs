@@ -82,6 +82,7 @@ class NotificationButtonClickedArgs:
 
 
 class NotificationCenter:
+    pass
 
 
 class Severity:

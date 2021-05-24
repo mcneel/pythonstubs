@@ -518,6 +518,7 @@ class IGH_Structure:
 
 
 class IGH_StructureEnumerator:
+    pass
 
 
 class PathLengthComparer:

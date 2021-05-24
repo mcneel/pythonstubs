@@ -1,7 +1,7 @@
 # configs
 $mypath = (Get-Item -Path ".\").FullName
 $stubsdest = "$mypath\stubs"
-$rhinobase = "C:\Program Files\Rhino WIP"
+$rhinobase = "C:\Program Files\Rhino 7"
 $rhinoplugins = "$rhinobase\Plug-ins"
 $rhinosystem = "$rhinobase\System"
 

@@ -83,6 +83,7 @@ class GH_SurfaceGetter:
 
 
 class GH_TransformGetter:
+    pass
 
 
 class GH_VectorGetter:

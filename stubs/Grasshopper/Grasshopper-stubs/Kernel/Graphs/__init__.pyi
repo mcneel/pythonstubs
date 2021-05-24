@@ -396,3 +396,4 @@ class IGH_Graph:
 
 
 class IGH_GraphProxyObject:
+    pass
