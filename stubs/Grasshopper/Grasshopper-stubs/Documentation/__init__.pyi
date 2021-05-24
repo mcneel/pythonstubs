@@ -164,3 +164,4 @@ class GH_Topic:
 
 
 class IGH_Content:
+    pass

@@ -132,6 +132,7 @@ class Style:
 
 
 class TransformCommand(Command):
+    pass
 
 
 class UndoRedoEventArgs:

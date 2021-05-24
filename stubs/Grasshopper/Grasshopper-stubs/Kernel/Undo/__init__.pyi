@@ -8,6 +8,7 @@ class GH_ArchivedUndoAction(GH_UndoAction):
 
 
 class GH_ObjectUndoAction(GH_UndoAction):
+    pass
 
 
 class GH_UndoAction:

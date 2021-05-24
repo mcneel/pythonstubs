@@ -8,6 +8,7 @@ class ClassIdAttribute:
 
 
 class CustomBrepObject(BrepObject):
+    pass
 
 
 class CustomCurveObject(CurveObject):
