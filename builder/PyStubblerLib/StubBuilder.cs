@@ -159,7 +159,7 @@ namespace PyStubblerLib
                 }
                 sb.AppendLine("]");
             }
-            sb.AppendLine("from typing import Tuple, Set, Iterable, List");
+            sb.AppendLine("from typing import Tuple, Set, Iterable, List, overload");
 
             foreach (var stubType in stubTypes)
             {

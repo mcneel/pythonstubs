@@ -1,5 +1,5 @@
 __all__ = ['Collections','Intersect','MeshRefinements','Morphs']
-from typing import Tuple, Set, Iterable, List
+from typing import Tuple, Set, Iterable, List, overload
 
 
 class AngularDimension(Dimension):

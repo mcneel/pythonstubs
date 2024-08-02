@@ -1,5 +1,5 @@
 __all__ = ['Interaction','TagArtists']
-from typing import Tuple, Set, Iterable, List
+from typing import Tuple, Set, Iterable, List, overload
 
 
 class CanvasPaintBackgroundEventHandler:
