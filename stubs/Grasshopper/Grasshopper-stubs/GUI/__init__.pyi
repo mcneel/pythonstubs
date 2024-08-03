@@ -1,5 +1,5 @@
 __all__ = ['Alignment','Base','Canvas','Colours','Equations','Gradient','HTML','IconEditor','Layout','MRU','RemotePanel','Ribbon','Script','SettingsControls','Stacks','StringDisplay','Theme','Widgets']
-from typing import Tuple, Set, Iterable, List
+from typing import Tuple, Set, Iterable, List, overload
 
 
 class AggregateShortcutMenuItemsEventHandler:

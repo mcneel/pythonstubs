@@ -85,7 +85,7 @@ namespace PythonStubs {
             path = Path.Combine(path, "__init__.pyi");
 
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("from typing import Tuple, Set, Iterable, List");
+            sb.AppendLine("from typing import Tuple, Set, Iterable, List, overload");
 
             foreach (var stubType in stubTypes) {
                 sb.AppendLine();
